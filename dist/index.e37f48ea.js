@@ -533,9 +533,18 @@ const constrolRecipes = async function() {
         //2. render qilamiz
         _recipeViewJsDefault.default.render(_modelJs.state.recipe);
     } catch (err) {
-        _recipeViewJsDefault.default.renderError('salom siz notugri manzil kiritdingiz 🎃🎃🎃');
+        _recipeViewJsDefault.default.renderError();
     }
 };
+const constrolSearchResults = async function() {
+    try {
+        await _modelJs.loadSearchResults('pizza');
+        console.log(_modelJs.state.search.results);
+    } catch (err) {
+        console.log(arr);
+    }
+};
+constrolSearchResults();
 const init = function() {
     _recipeViewJsDefault.default.addHandlerRender(constrolRecipes);
 };
@@ -1593,7 +1602,11 @@ var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
 const state = {
-    recipe: {}
+    recipe: {},
+    search: {
+        query: '',
+        results: []
+    }
 };
 const loadRecipe = async function(id) {
     try {
@@ -1617,8 +1630,17 @@ const loadRecipe = async function(id) {
 };
 const loadSearchResults = async function(query) {
     try {
+        state.search.query = query;
         const data = await _helpersJs.getJSON(`${_configJs.API_URL}?search=${query}`);
         console.log(data);
+        state.search.results = data.data.recipes.map((rec)=>{
+            return {
+                id: rec.id,
+                title: rec.title,
+                publisher: rec.publisher,
+                image: rec.image_url
+            };
+        });
     } catch (err) {
         console.error(`${err} 🎇🎇🎇🎇`);
         throw err;
@@ -2269,7 +2291,7 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 var _ = require("fractional/");
 class RecipeView {
     #parentElement = document.querySelector('.recipe');
-    #errorMessage = `We could not find that recipe.Please try another one!`;
+    #errorMessage = 'salom siz notugri manzil kiritdingiz 🎃🎃🎃';
     #data;
     #message = '';
     render(data) {

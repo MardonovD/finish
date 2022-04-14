@@ -3,7 +3,7 @@ import { Fraction } from 'fractional/';
 
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
-  #errorMessage = `We could not find that recipe.Please try another one!`;
+  #errorMessage = 'salom siz notugri manzil kiritdingiz 🎃🎃🎃';
   #data;
   #message = '';
   render(data) {
